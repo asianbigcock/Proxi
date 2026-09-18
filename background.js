@@ -69,3 +69,16 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     .catch((error) => sendResponse({ ok: false, error: error.message }));
   return true;
 });
+chrome.commands.onCommand.addListener(async (command) => {
+  // 获取已保存的配置，确保切换全局代理时参数有效
+  const saved = await chrome.storage.local.get(DEFAULTS);
+  const proxySettings = saved.proxySettings;
+
+  if (command === "set_direct") {
+    await applyMode("direct", proxySettings);
+  } else if (command === "set_system") {
+    await applyMode("system", proxySettings);
+  } else if (command === "set_global") {
+    await applyMode("global", proxySettings);
+  }
+});

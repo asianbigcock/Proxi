@@ -23,5 +23,28 @@
     "32": "icons/system-32.png",
     "48": "icons/system-48.png",
     "128": "icons/system-128.png"
+  },
+  "commands": {
+    "set_direct": {
+      "suggested_key": {
+        "default": "Alt+Shift+D",
+        "mac": "Alt+Shift+D"
+      },
+      "description": "切换为直接连接"
+    },
+    "set_system": {
+      "suggested_key": {
+        "default": "Alt+Shift+S",
+        "mac": "Alt+Shift+S"
+      },
+      "description": "切换为系统代理"
+    },
+    "set_global": {
+      "suggested_key": {
+        "default": "Alt+Shift+F",
+        "mac": "Alt+Shift+F"
+      },
+      "description": "切换为全局代理"
+    }
   }
 }
