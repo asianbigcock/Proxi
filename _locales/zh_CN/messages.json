@@ -13,8 +13,5 @@
   "host": { "message": "IP 地址" },
   "port": { "message": "端口" },
   "bypass": { "message": "忽略地址" },
-  "saveAndEnable": { "message": "保存并启用" },
-  "invalidIp": { "message": "请输入有效的 IPv4 地址" },
-  "invalidPort": { "message": "端口必须是 1–65535 的数字" },
-  "saved": { "message": "自定义代理已保存并启用" }
+  "saveAndEnable": { "message": "应用" }
 }

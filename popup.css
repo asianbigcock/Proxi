@@ -9,8 +9,8 @@ main { padding: 8px; }
 .mode span { display: grid; flex: 1; gap: 1px; }
 .mode b { font-size: 13px; }
 .mode small { color: #7a8296; font-size: 10px; }
-.dot { width: 11px; height: 11px; border-radius: 50%; box-shadow: 0 0 0 3px currentColor inset; }
-.dot.direct { color: #29a36a; }.dot.system { color: #64748b; }.dot.custom { color: #6657e8; }
+.mode-icon { width: 19px; height: 19px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.mode-icon.direct { color: #29a36a; }.mode-icon.system { color: #64748b; }.mode-icon.custom { color: #6657e8; }
 .edit { width: 28px; height: 28px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 7px; background: #f0efff; color: #6657e8; cursor: pointer; padding: 6px; }
 .edit:hover { background: #e3e0ff; }
 .edit svg { width: 16px; height: 16px; fill: currentColor; }
@@ -24,9 +24,6 @@ select { padding-left: 5px; padding-right: 3px; }
 input:focus, select:focus, textarea:focus { border-color: #6657e8; box-shadow: 0 0 0 2px #6657e822; }
 textarea { margin-top: 6px; resize: vertical; }
 .save { width: 100%; margin-top: 7px; padding: 8px; border: 0; border-radius: 8px; background: #6657e8; color: white; font-size: 11px; font-weight: 700; cursor: pointer; }
-#message { min-height: 0; text-align: center; color: #26865a; font-size: 10px; }
-#message:not(:empty) { padding-top: 6px; }
-#message.error { color: #d33d4b; }
 
 @media (prefers-color-scheme: dark) {
   body { background: #171922; color: #edf0f7; }

@@ -5,7 +5,6 @@ const DEFAULTS = {
 
 const form = document.querySelector("#customForm");
 const editProxy = document.querySelector("#editProxy");
-const message = document.querySelector("#message");
 const fields = {
   scheme: document.querySelector("#scheme"), host: document.querySelector("#host"),
   port: document.querySelector("#port"), bypassList: document.querySelector("#bypassList")
@@ -36,13 +35,6 @@ function render() {
   document.querySelectorAll(".mode").forEach((button) => button.classList.toggle("active", button.dataset.mode === state.mode));
   form.classList.toggle("visible", editing);
   editProxy.setAttribute("aria-expanded", String(editing));
-}
-
-function flash(text, isError = false) {
-  message.textContent = text;
-  message.classList.toggle("error", isError);
-  clearTimeout(flash.timer);
-  flash.timer = setTimeout(() => { message.textContent = ""; }, 2200);
 }
 
 function readCustomProxy() {
@@ -80,7 +72,7 @@ async function apply(mode, customProxy = state.customProxy) {
 }
 
 async function selectMode(mode) {
-  try { await apply(mode); } catch (error) { flash(error.message, true); }
+  try { await apply(mode); } catch (error) { console.error(error); }
 }
 
 document.querySelectorAll(".mode").forEach((control) => {
@@ -99,14 +91,13 @@ editProxy.addEventListener("click", (event) => {
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const customProxy = readCustomProxy();
-  if (!isValidIPv4(customProxy.host)) return flash(messageFor("invalidIp"), true);
-  if (!/^\d+$/.test(fields.port.value) || customProxy.port < 1 || customProxy.port > 65535) return flash(messageFor("invalidPort"), true);
+  if (!isValidIPv4(customProxy.host)) return;
+  if (!/^\d+$/.test(fields.port.value) || customProxy.port < 1 || customProxy.port > 65535) return;
   try {
     await apply("custom", customProxy);
     editing = false;
     render();
-    flash(messageFor("saved"));
-  } catch (error) { flash(error.message, true); }
+  } catch (error) { console.error(error); }
 });
 
 (async () => {
