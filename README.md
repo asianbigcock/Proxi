@@ -14,3 +14,8 @@
 4. 选择本 `Proxi` 文件夹
 
 全局代理配置保存在 Chrome 本地存储中，不会上传。
+
+## 快捷键
+Alt+Shift+D -> 直接连接
+Alt+Shift+S -> 系统代理
+Alt+Shift+F -> 全局代理
