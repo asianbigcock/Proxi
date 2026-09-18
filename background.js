@@ -1,6 +1,6 @@
 const DEFAULTS = {
   mode: "system",
-  customProxy: {
+  proxySettings: {
     scheme: "http",
     host: "127.0.0.1",
     port: 7890,
@@ -8,14 +8,14 @@ const DEFAULTS = {
   }
 };
 
-const ICONS = {
-  direct: "direct",
-  system: "system",
-  custom: "custom"
-};
+const VALID_MODES = new Set(["direct", "system", "global"]);
+
+function validMode(mode) {
+  return VALID_MODES.has(mode) ? mode : DEFAULTS.mode;
+}
 
 function iconPaths(mode) {
-  const name = ICONS[mode] || ICONS.system;
+  const name = validMode(mode);
   return {
     16: `icons/${name}-16.png`,
     32: `icons/${name}-32.png`,
@@ -24,11 +24,7 @@ function iconPaths(mode) {
   };
 }
 
-function setIcon(mode) {
-  return chrome.action.setIcon({ path: iconPaths(mode) });
-}
-
-function proxyConfig(mode, customProxy) {
+function proxyConfig(mode, proxySettings) {
   if (mode === "direct") return { mode: "direct" };
   if (mode === "system") return { mode: "system" };
 
@@ -36,27 +32,30 @@ function proxyConfig(mode, customProxy) {
     mode: "fixed_servers",
     rules: {
       singleProxy: {
-        scheme: customProxy.scheme,
-        host: customProxy.host,
-        port: Number(customProxy.port)
+        scheme: proxySettings.scheme,
+        host: proxySettings.host,
+        port: Number(proxySettings.port)
       },
-      bypassList: customProxy.bypassList || []
+      bypassList: proxySettings.bypassList || []
     }
   };
 }
 
-async function applyMode(mode, customProxy) {
+async function applyMode(mode, proxySettings) {
+  mode = validMode(mode);
   await chrome.proxy.settings.set({
-    value: proxyConfig(mode, customProxy),
+    value: proxyConfig(mode, proxySettings),
     scope: "regular"
   });
-  await chrome.storage.local.set({ mode, customProxy });
-  await setIcon(mode);
+  await chrome.storage.local.set({ mode, proxySettings });
+  await chrome.action.setIcon({ path: iconPaths(mode) });
 }
 
 async function initialize() {
   const saved = await chrome.storage.local.get(DEFAULTS);
-  await applyMode(saved.mode, saved.customProxy);
+  const mode = saved.mode;
+  const proxySettings = saved.proxySettings;
+  await applyMode(mode, proxySettings);
 }
 
 chrome.runtime.onInstalled.addListener(initialize);
@@ -65,7 +64,7 @@ chrome.runtime.onStartup.addListener(initialize);
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message?.type !== "applyProxy") return false;
 
-  applyMode(message.mode, message.customProxy)
+  applyMode(message.mode, message.proxySettings)
     .then(() => sendResponse({ ok: true }))
     .catch((error) => sendResponse({ ok: false, error: error.message }));
   return true;

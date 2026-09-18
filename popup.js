@@ -1,10 +1,11 @@
 const DEFAULTS = {
   mode: "system",
-  customProxy: { scheme: "http", host: "127.0.0.1", port: 7890, bypassList: ["localhost", "127.0.0.1", "<local>"] }
+  proxySettings: { scheme: "http", host: "127.0.0.1", port: 7890, bypassList: ["localhost", "127.0.0.1", "<local>"] }
 };
 
-const form = document.querySelector("#customForm");
+const form = document.querySelector("#proxyForm");
 const editProxy = document.querySelector("#editProxy");
+const modeControls = document.querySelectorAll(".mode");
 const fields = {
   scheme: document.querySelector("#scheme"), host: document.querySelector("#host"),
   port: document.querySelector("#port"), bypassList: document.querySelector("#bypassList")
@@ -32,12 +33,12 @@ function localize() {
 }
 
 function render() {
-  document.querySelectorAll(".mode").forEach((button) => button.classList.toggle("active", button.dataset.mode === state.mode));
+  modeControls.forEach((control) => control.classList.toggle("active", control.dataset.mode === state.mode));
   form.classList.toggle("visible", editing);
   editProxy.setAttribute("aria-expanded", String(editing));
 }
 
-function readCustomProxy() {
+function readProxySettings() {
   return {
     scheme: fields.scheme.value,
     host: fields.host.value.trim(),
@@ -64,18 +65,20 @@ fields.port.addEventListener("input", () => {
   fields.port.value = fields.port.value.replace(/\D/g, "").slice(0, 5);
 });
 
-async function apply(mode, customProxy = state.customProxy) {
-  const result = await chrome.runtime.sendMessage({ type: "applyProxy", mode, customProxy });
+async function apply(mode, proxySettings = state.proxySettings) {
+  const result = await chrome.runtime.sendMessage({ type: "applyProxy", mode, proxySettings });
   if (!result?.ok) throw new Error(result?.error || "设置失败");
-  state = { mode, customProxy };
-  render();
+  state = { mode, proxySettings };
 }
 
 async function selectMode(mode) {
-  try { await apply(mode); } catch (error) { console.error(error); }
+  try {
+    await apply(mode);
+    render();
+  } catch (error) { console.error(error); }
 }
 
-document.querySelectorAll(".mode").forEach((control) => {
+modeControls.forEach((control) => {
   control.addEventListener("click", () => selectMode(control.dataset.mode));
   if (control.tagName !== "BUTTON") control.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectMode(control.dataset.mode); }
@@ -90,11 +93,11 @@ editProxy.addEventListener("click", (event) => {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const customProxy = readCustomProxy();
-  if (!isValidIPv4(customProxy.host)) return;
-  if (!/^\d+$/.test(fields.port.value) || customProxy.port < 1 || customProxy.port > 65535) return;
+  const proxySettings = readProxySettings();
+  if (!isValidIPv4(proxySettings.host)) return;
+  if (!/^\d+$/.test(fields.port.value) || proxySettings.port < 1 || proxySettings.port > 65535) return;
   try {
-    await apply("custom", customProxy);
+    await apply("global", proxySettings);
     editing = false;
     render();
   } catch (error) { console.error(error); }
@@ -103,10 +106,10 @@ form.addEventListener("submit", async (event) => {
 (async () => {
   localize();
   const saved = await chrome.storage.local.get(DEFAULTS);
-  state = { mode: saved.mode, customProxy: saved.customProxy };
-  fields.scheme.value = state.customProxy.scheme;
-  fields.host.value = state.customProxy.host;
-  fields.port.value = state.customProxy.port;
-  fields.bypassList.value = (state.customProxy.bypassList || []).join(", ");
+  state = saved;
+  fields.scheme.value = state.proxySettings.scheme;
+  fields.host.value = state.proxySettings.host;
+  fields.port.value = state.proxySettings.port;
+  fields.bypassList.value = (state.proxySettings.bypassList || []).join(", ");
   render();
 })();

@@ -10,12 +10,12 @@ main { padding: 8px; }
 .mode b { font-size: 13px; }
 .mode small { color: #7a8296; font-size: 10px; }
 .mode-icon { width: 19px; height: 19px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.mode-icon.direct { color: #29a36a; }.mode-icon.system { color: #64748b; }.mode-icon.custom { color: #6657e8; }
+.mode-icon.direct { color: #29a36a; }.mode-icon.system { color: #64748b; }.mode-icon.global { color: #6657e8; }
 .edit { width: 28px; height: 28px; display: grid; place-items: center; flex: 0 0 auto; border: 0; border-radius: 7px; background: #f0efff; color: #6657e8; cursor: pointer; padding: 6px; }
 .edit:hover { background: #e3e0ff; }
 .edit svg { width: 16px; height: 16px; fill: currentColor; }
-.custom-panel { display: none; margin-top: 6px; padding: 8px; border: 1px solid #e1e5ee; border-radius: 9px; background: white; }
-.custom-panel.visible { display: block; }
+.proxy-panel { display: none; margin-top: 6px; padding: 8px; border: 1px solid #e1e5ee; border-radius: 9px; background: white; }
+.proxy-panel.visible { display: block; }
 .row { display: grid; grid-template-columns: 76px 1fr 60px; gap: 5px; }
 .row + label { margin-top: 9px; }
 label { display: grid; gap: 5px; color: #5f687b; font-size: 11px; }
@@ -27,7 +27,7 @@ textarea { margin-top: 6px; resize: vertical; }
 
 @media (prefers-color-scheme: dark) {
   body { background: #171922; color: #edf0f7; }
-  .mode, .custom-panel { background: #222530; border-color: #343847; }
+  .mode, .proxy-panel { background: #222530; border-color: #343847; }
   .mode:hover { border-color: #596073; }
   .mode.active { border-color: #8074ff; box-shadow: 0 0 0 2px #8074ff2b; }
   .mode small, label { color: #aeb5c6; }
