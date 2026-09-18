@@ -1,0 +1,20 @@
+{
+  "extensionName": { "message": "Proxi" },
+  "extensionDescription": { "message": "在直连、系统代理和自定义代理之间快速切换。" },
+  "modesLabel": { "message": "代理模式" },
+  "direct": { "message": "直接连接" },
+  "directHint": { "message": "不使用代理" },
+  "system": { "message": "系统代理" },
+  "systemHint": { "message": "跟随操作系统设置" },
+  "custom": { "message": "规则判定" },
+  "customHint": { "message": "使用已保存配置" },
+  "editProxy": { "message": "编辑代理设置" },
+  "scheme": { "message": "协议" },
+  "host": { "message": "IP 地址" },
+  "port": { "message": "端口" },
+  "bypass": { "message": "忽略地址" },
+  "saveAndEnable": { "message": "保存并启用" },
+  "invalidIp": { "message": "请输入有效的 IPv4 地址" },
+  "invalidPort": { "message": "端口必须是 1–65535 的数字" },
+  "saved": { "message": "自定义代理已保存并启用" }
+}

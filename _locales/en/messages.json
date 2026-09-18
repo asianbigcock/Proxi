@@ -1,0 +1,20 @@
+{
+  "extensionName": { "message": "Proxi" },
+  "extensionDescription": { "message": "Quickly switch between direct, system, and custom proxy modes." },
+  "modesLabel": { "message": "Proxy mode" },
+  "direct": { "message": "Direct" },
+  "directHint": { "message": "No proxy" },
+  "system": { "message": "System" },
+  "systemHint": { "message": "Follow system settings" },
+  "custom": { "message": "Rule" },
+  "customHint": { "message": "Use saved configuration" },
+  "editProxy": { "message": "Edit proxy settings" },
+  "scheme": { "message": "Protocol" },
+  "host": { "message": "IP address" },
+  "port": { "message": "Port" },
+  "bypass": { "message": "Bypass list" },
+  "saveAndEnable": { "message": "Save and enable" },
+  "invalidIp": { "message": "Enter a valid IPv4 address" },
+  "invalidPort": { "message": "Port must be a number from 1 to 65535" },
+  "saved": { "message": "Custom proxy saved and enabled" }
+}
